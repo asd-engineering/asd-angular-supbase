@@ -1,0 +1,8 @@
+dist
+.angular
+node_modules
+pnpm-lock.yaml
+src/app/core/types/database.types.ts
+coverage
+playwright-report
+test-results

@@ -1,0 +1,867 @@
+@import 'tailwindcss';
+
+/* Ensure Tailwind CSS 4 scans all source files for utility classes */
+@source "./**/*.{html,ts,js}";
+
+@plugin '@tailwindcss/typography';
+@plugin "daisyui" {
+  themes: false;
+}
+
+/*
+ * ═══════════════════════════════════════════════════════════════════════════════
+ * ASD BRAND SYSTEM - "Terminal Velocity"
+ * ═══════════════════════════════════════════════════════════════════════════════
+ *
+ * BRAND IDENTITY:
+ * - Primary: Hacker Green (#00cc6a) - unified ASD letters, professional
+ * - Accent: Tri-color gradient (red → amber → green) for CTA highlights
+ *
+ * CORE PRINCIPLE: FILLED vs BORDERED
+ * - FILLED = "Running" / "Active" / "Confirmed" (solid background)
+ * - BORDERED = "Available" / "Option" / "Ready" (outline only)
+ *
+ * SEMANTIC COLORS (Dark Theme):
+ * - Primary (#00cc6a): ASD Brand / Success / Go / "exit 0"
+ * - Error (#b91c1c): Problem / Error / Stop / "exit 1"
+ * - Warning (#f59e0b): Caution / Processing / Beta
+ * - Info (#4ecdc4): Developer / Technical info
+ *
+ * TYPOGRAPHY:
+ * - Headlines: IBM Plex Sans (Bold/SemiBold) - man + machine heritage
+ * - Body: Inter - optimized for UI/screen readability
+ * - Code/Terminal: IBM Plex Mono - authentic terminal aesthetic
+ *
+ * ═══════════════════════════════════════════════════════════════════════════════
+ */
+
+/* =============================================================================
+   TYPOGRAPHY SYSTEM
+   ============================================================================= */
+
+@font-face {
+  font-family: 'Inter-fallback';
+  src: local('Arial');
+  ascent-override: 90%;
+  descent-override: 22.43%;
+  line-gap-override: 0%;
+  size-adjust: 107.64%;
+}
+
+@font-face {
+  font-family: 'IBM Plex Sans-fallback';
+  src: local('Arial');
+  ascent-override: 101%;
+  descent-override: 27%;
+  line-gap-override: 0%;
+  size-adjust: 100%;
+}
+
+@font-face {
+  font-family: 'IBM Plex Mono-fallback';
+  src: local('Courier New');
+  ascent-override: 103%;
+  descent-override: 26%;
+  line-gap-override: 0%;
+  size-adjust: 90%;
+}
+
+html {
+  font-family: 'Inter', 'Inter-fallback', ui-sans-serif, system-ui, sans-serif;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.font-heading {
+  font-family: 'IBM Plex Sans', 'IBM Plex Sans-fallback', ui-sans-serif, system-ui, sans-serif;
+}
+
+code,
+pre,
+kbd,
+samp,
+.font-mono,
+.terminal-header {
+  font-family: 'IBM Plex Mono', 'IBM Plex Mono-fallback', ui-monospace, monospace;
+}
+
+/* =============================================================================
+   ASD LIGHT THEME
+   ============================================================================= */
+@plugin "daisyui/theme" {
+  name: 'asd-light';
+  prefersdark: false;
+  color-scheme: light;
+
+  --color-primary: #047857;
+  --color-primary-content: #ffffff;
+  --color-secondary: #b45309;
+  --color-secondary-content: #ffffff;
+  --color-accent: #b91c1c;
+  --color-accent-content: #ffffff;
+  --color-neutral: #1e293b;
+  --color-neutral-content: #f8fafc;
+  --color-base-100: #fefbf6;
+  --color-base-200: #f5f0e8;
+  --color-base-300: #e8e2d9;
+  --color-base-content: #1e293b;
+  --color-info: #0369a1;
+  --color-info-content: #ffffff;
+  --color-success: #047857;
+  --color-success-content: #ffffff;
+  --color-warning: #b45309;
+  --color-warning-content: #ffffff;
+  --color-error: #b91c1c;
+  --color-error-content: #ffffff;
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+/* =============================================================================
+   ASD DARK THEME (Hero Theme)
+   ============================================================================= */
+@plugin "daisyui/theme" {
+  name: 'asd-dark';
+  default: true;
+  prefersdark: true;
+  color-scheme: dark;
+
+  --color-primary: #00cc6a;
+  --color-primary-content: #ffffff;
+  --color-secondary: #f59e0b;
+  --color-secondary-content: #0f172a;
+  --color-accent: #b91c1c;
+  --color-accent-content: #fef2f2;
+  --color-neutral: #334155;
+  --color-neutral-content: #f8fafc;
+  --color-base-100: #0f172a;
+  --color-base-200: #1e293b;
+  --color-base-300: #334155;
+  --color-base-content: #f8fafc;
+  --color-info: #4ecdc4;
+  --color-info-content: #0f172a;
+  --color-success: #00cc6a;
+  --color-success-content: #0f172a;
+  --color-warning: #f59e0b;
+  --color-warning-content: #0f172a;
+  --color-error: #b91c1c;
+  --color-error-content: #fef2f2;
+
+  --radius-selector: 0.5rem;
+  --radius-field: 0.375rem;
+  --radius-box: 0.5rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 1;
+  --noise: 0;
+}
+
+/* =============================================================================
+   TAILWIND V4 COMPATIBILITY
+   ============================================================================= */
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentColor);
+  }
+}
+
+/* =============================================================================
+   INTERACTIVE ELEMENTS - CURSOR STYLES
+   ============================================================================= */
+a,
+button,
+[role='button'],
+[onclick],
+label[for],
+.clickable,
+summary {
+  @apply cursor-pointer;
+}
+
+button:disabled,
+[disabled],
+.disabled {
+  @apply cursor-not-allowed;
+}
+
+/* =============================================================================
+   ASD TERMINAL AESTHETIC
+   ============================================================================= */
+
+.terminal-header {
+  font-family: 'IBM Plex Mono', ui-monospace, monospace;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  position: relative;
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  gap: 0;
+}
+
+.terminal-header::before {
+  content: '>';
+  opacity: 0.7;
+  margin-right: 0.5em;
+}
+
+.terminal-header .terminal-cursor {
+  display: inline-block;
+  width: 0.6em;
+  height: 1em;
+  background-color: var(--color-primary);
+  margin-left: 2px;
+  opacity: 0;
+  transition: opacity 0.15s ease;
+}
+
+.terminal-header:hover .terminal-cursor {
+  opacity: 1;
+  animation: cursor-blink 0.8s step-end infinite;
+}
+
+.terminal-header .terminal-text {
+  display: inline;
+  vertical-align: baseline;
+}
+
+@media (min-width: 640px) {
+  .terminal-header .terminal-text {
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    max-width: 100%;
+    vertical-align: baseline;
+  }
+}
+
+.terminal-header:hover .terminal-text {
+  animation: typing-effect 0.6s steps(var(--char-count, 12), end) forwards;
+}
+
+@keyframes typing-effect {
+  from {
+    max-width: 0;
+  }
+  to {
+    max-width: 100%;
+  }
+}
+
+.cursor-blink::after {
+  content: '_';
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+.hero-typing {
+  animation: typing-reveal 4s steps(var(--char-count, 50), end) forwards;
+  clip-path: inset(0 100% 0 0);
+}
+
+.hero-cursor {
+  color: var(--color-primary);
+  animation: cursor-blink 1s step-end infinite;
+}
+
+@keyframes typing-reveal {
+  from {
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes cursor-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-typing {
+    animation: none;
+    clip-path: none;
+  }
+  .hero-cursor {
+    animation: none;
+    opacity: 1;
+  }
+}
+
+/* =============================================================================
+   STAT CARDS
+   ============================================================================= */
+
+.stat-card {
+  @apply rounded-lg p-4 border-l-4;
+  background: var(--color-base-200);
+  border-color: var(--color-primary);
+}
+
+.stat-card--success {
+  border-color: var(--color-success);
+}
+
+.stat-card--warning {
+  border-color: var(--color-warning);
+}
+
+.stat-card--error {
+  border-color: var(--color-error);
+}
+
+.stat-card--info {
+  border-color: var(--color-info);
+}
+
+.stat-value {
+  font-size: 2.5rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--color-primary);
+}
+
+.stat-card--error .stat-value {
+  color: var(--color-error);
+}
+
+.stat-card--warning .stat-value {
+  color: var(--color-warning);
+}
+
+.stat-card--success .stat-value {
+  color: var(--color-success);
+}
+
+.stat-card--info .stat-value {
+  color: var(--color-info);
+}
+
+/* =============================================================================
+   GLOW EFFECTS (Dark mode only)
+   ============================================================================= */
+
+[data-theme='asd-dark'] .glow-primary {
+  box-shadow:
+    0 0 20px rgba(0, 204, 106, 0.25),
+    0 0 40px rgba(0, 204, 106, 0.1);
+}
+
+[data-theme='asd-dark'] .glow-primary-sm {
+  box-shadow: 0 0 10px rgba(0, 204, 106, 0.2);
+}
+
+[data-theme='asd-dark'] .glow-secondary {
+  box-shadow: 0 0 20px rgba(245, 158, 11, 0.2);
+}
+
+[data-theme='asd-dark'] .glow-error {
+  box-shadow: 0 0 20px rgba(185, 28, 28, 0.25);
+}
+
+[data-theme='asd-dark'] .hover-glow:hover {
+  box-shadow: 0 0 15px rgba(0, 204, 106, 0.3);
+  border-color: var(--color-primary);
+}
+
+/* =============================================================================
+   CTA BANNER
+   ============================================================================= */
+
+.cta-banner {
+  @apply py-4 px-6 text-center font-medium;
+  background: var(--color-primary);
+  color: var(--color-primary-content);
+}
+
+/* =============================================================================
+   FEATURE CARDS
+   ============================================================================= */
+
+.feature-card {
+  @apply rounded-lg p-5 border-l-4;
+  background: var(--color-base-200);
+  border-color: var(--color-primary);
+}
+
+[data-theme='asd-dark'] .feature-card {
+  background: var(--color-base-200);
+  border: 1px solid var(--color-base-300);
+  border-left: 4px solid var(--color-primary);
+}
+
+/* =============================================================================
+   LOG-READY UTILITIES
+   ============================================================================= */
+
+.log-level {
+  @apply inline-flex items-center px-2 py-0.5 rounded text-xs font-mono font-semibold;
+}
+
+.log-level--debug {
+  background: var(--color-base-300);
+  color: var(--color-base-content);
+}
+
+.log-level--info {
+  background: rgba(14, 165, 233, 0.15);
+  color: var(--color-info);
+}
+
+.log-level--warn {
+  background: rgba(251, 191, 36, 0.15);
+  color: var(--color-warning);
+}
+
+.log-level--error {
+  background: rgba(185, 28, 28, 0.15);
+  color: var(--color-error);
+}
+
+.log-level--success {
+  background: rgba(0, 204, 106, 0.15);
+  color: var(--color-success);
+}
+
+.log-entry {
+  @apply flex items-start gap-3 py-2 px-3 font-mono text-sm border-b;
+  border-color: var(--color-base-300);
+}
+
+.log-entry:hover {
+  background: var(--color-base-200);
+}
+
+.log-timestamp {
+  @apply text-xs opacity-60 whitespace-nowrap;
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+}
+
+/* =============================================================================
+   ASD BRAND IDENTITY
+   ============================================================================= */
+
+:root {
+  --asd-brand: #00cc6a;
+  --asd-red: #b91c1c;
+  --asd-amber: #f59e0b;
+  --asd-green: #00cc6a;
+
+  --bg-solution-tint: #0d1a17;
+  --bg-problem-tint: #1a1214;
+  --bg-developer-tint: #0d1520;
+  --bg-future-tint: #1a1420;
+  --bg-attention-tint: #1a1510;
+
+  --text-h1: 3rem;
+  --text-h2: 2.25rem;
+  --text-h3: 1.5rem;
+  --text-h4: 1.25rem;
+  --text-body-lg: 1.125rem;
+  --text-body: 1rem;
+  --text-body-sm: 0.875rem;
+  --text-code: 0.875rem;
+
+  --leading-tight: 1.25;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.6;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+}
+
+[data-theme='asd-light'] {
+  --asd-brand: #047857;
+  --asd-red: #b91c1c;
+  --asd-amber: #b45309;
+  --asd-green: #047857;
+
+  --bg-solution-tint: #ecfdf5;
+  --bg-problem-tint: #fef2f2;
+  --bg-developer-tint: #eff6ff;
+  --bg-future-tint: #faf5ff;
+  --bg-attention-tint: #fffbeb;
+}
+
+.brand-border {
+  border-left: 4px solid var(--color-primary);
+}
+
+.brand-border-gradient {
+  border-left: 4px solid;
+  border-image: linear-gradient(180deg, var(--asd-red), var(--asd-amber), var(--asd-green)) 1;
+}
+
+.brand-gradient-h {
+  background: linear-gradient(90deg, var(--asd-red), var(--asd-amber), var(--asd-green));
+}
+
+[data-theme='asd-dark'] .glow-brand {
+  box-shadow:
+    0 0 20px rgba(185, 28, 28, 0.2),
+    0 0 40px rgba(245, 158, 11, 0.1),
+    0 0 60px rgba(0, 204, 106, 0.1);
+}
+
+.stat-card--brand {
+  border-image: linear-gradient(180deg, var(--asd-red), var(--asd-amber), var(--asd-green)) 1;
+}
+
+.feature-card--brand {
+  border-left: 4px solid;
+  border-image: linear-gradient(180deg, var(--asd-red), var(--asd-amber), var(--asd-green)) 1;
+}
+
+/* =============================================================================
+   CONTEXT TINT UTILITIES
+   ============================================================================= */
+
+.bg-solution-tint {
+  background-color: var(--bg-solution-tint);
+}
+.bg-problem-tint {
+  background-color: var(--bg-problem-tint);
+}
+.bg-developer-tint {
+  background-color: var(--bg-developer-tint);
+}
+.bg-future-tint {
+  background-color: var(--bg-future-tint);
+}
+.bg-attention-tint {
+  background-color: var(--bg-attention-tint);
+}
+
+.context-card--solution {
+  background-color: var(--bg-solution-tint);
+  border-left: 4px solid var(--color-success);
+}
+
+.context-card--problem {
+  background-color: var(--bg-problem-tint);
+  border-left: 4px solid var(--color-error);
+}
+
+.context-card--developer {
+  background-color: var(--bg-developer-tint);
+  border-left: 4px solid var(--color-info);
+}
+
+.context-card--future {
+  background-color: var(--bg-future-tint);
+  border-left: 4px solid var(--color-secondary);
+}
+
+.context-card--attention {
+  background-color: var(--bg-attention-tint);
+  border-left: 4px solid var(--color-warning);
+}
+
+/* =============================================================================
+   ACCESSIBILITY: HIGH-CONTRAST TEXT VARIANTS
+   ============================================================================= */
+
+.text-warning-contrast {
+  color: #92400e;
+}
+
+[data-theme='asd-dark'] .text-warning-contrast {
+  color: #fbbf24;
+}
+
+.text-secondary-contrast {
+  color: #92400e;
+}
+
+[data-theme='asd-dark'] .text-secondary-contrast {
+  color: #fbbf24;
+}
+
+.text-success-contrast {
+  color: #065f46;
+}
+
+[data-theme='asd-dark'] .text-success-contrast {
+  color: #34d399;
+}
+
+.text-info-contrast {
+  color: #0e7490;
+}
+
+[data-theme='asd-dark'] .text-info-contrast {
+  color: #67e8f9;
+}
+
+.text-muted {
+  color: #475569;
+}
+
+[data-theme='asd-dark'] .text-muted {
+  color: #94a3b8;
+}
+
+.text-muted-sm {
+  color: #374151;
+}
+
+[data-theme='asd-dark'] .text-muted-sm {
+  color: #cbd5e1;
+}
+
+/* =============================================================================
+   LOGO THEME SWITCHING
+   ============================================================================= */
+
+.logo-dark {
+  display: block !important;
+}
+
+.logo-light {
+  display: none !important;
+}
+
+[data-theme='asd-dark'] .logo-dark {
+  display: none !important;
+}
+
+[data-theme='asd-dark'] .logo-light {
+  display: block !important;
+}
+
+[data-theme='asd-dark'] .site-title {
+  color: #f8fafc;
+}
+
+.asd-letter {
+  color: var(--asd-brand, #00cc6a);
+}
+
+/* =============================================================================
+   THEME TRANSITION
+   ============================================================================= */
+
+html {
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+html.theme-transitioning * {
+  transition: none !important;
+}
+
+/* =============================================================================
+   COMPONENT POLISH
+   ============================================================================= */
+
+.btn {
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 204, 106, 0.25);
+}
+
+[data-theme='asd-light'] .btn-primary:hover:not(:disabled) {
+  box-shadow: 0 4px 12px rgba(4, 120, 87, 0.25);
+}
+
+.btn-secondary:hover:not(:disabled) {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(245, 158, 11, 0.2);
+}
+
+.btn-outline:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.card.no-hover-lift:hover {
+  transform: none;
+}
+
+[data-theme='asd-dark'] .card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+}
+
+[data-theme='asd-light'] .card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+}
+
+.feature-card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.feature-card:hover {
+  transform: translateY(-2px);
+}
+
+[data-theme='asd-dark'] .feature-card:hover {
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+  border-color: var(--color-primary);
+}
+
+.stat-card {
+  transition:
+    transform 0.2s ease,
+    box-shadow 0.2s ease;
+}
+
+.stat-card:hover {
+  transform: translateY(-1px);
+}
+
+[data-theme='asd-dark'] .stat-card:hover {
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+}
+
+.input:focus,
+.textarea:focus,
+.select:focus {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+  border-color: var(--color-primary);
+}
+
+.navbar-blur {
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+[data-theme='asd-dark'] .navbar-blur {
+  background: rgba(15, 23, 42, 0.85);
+}
+
+[data-theme='asd-light'] .navbar-blur {
+  background: rgba(254, 251, 246, 0.85);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .btn,
+  .card,
+  .feature-card,
+  .stat-card {
+    transition: none;
+  }
+}
+
+/* =============================================================================
+   PRINT STYLES
+   ============================================================================= */
+
+@media print {
+  footer,
+  .toast,
+  .drawer-side,
+  .dropdown,
+  .modal {
+    display: none !important;
+  }
+
+  body,
+  html {
+    background: white !important;
+    color: black !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+
+  .max-w-4xl,
+  .max-w-6xl,
+  .max-w-7xl {
+    max-width: 100% !important;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    page-break-after: avoid;
+  }
+
+  section,
+  article {
+    page-break-inside: avoid;
+  }
+
+  table {
+    border-collapse: collapse;
+    width: 100%;
+  }
+
+  th,
+  td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: left;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}

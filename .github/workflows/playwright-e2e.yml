@@ -1,0 +1,42 @@
+name: Playwright E2E
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  e2e:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        project: [chromium]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+      - run: pnpm install --frozen-lockfile
+      - name: Install Playwright browsers
+        run: pnpm exec playwright install --with-deps ${{ matrix.project }}
+      - name: Start Supabase
+        run: npx supabase start
+      - name: Wait for Supabase
+        run: |
+          for i in $(seq 1 30); do
+            npx supabase status > /dev/null 2>&1 && break
+            echo "Attempt $i/30 - waiting 2s..."
+            sleep 2
+          done
+      - name: Run Playwright tests
+        run: pnpm exec playwright test --project=${{ matrix.project }}
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright-report-${{ matrix.project }}
+          path: playwright-report/
+          retention-days: 30

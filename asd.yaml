@@ -1,0 +1,150 @@
+version: 1
+project:
+  name: asd-angular-supabase
+  description: Angular + Supabase boilerplate with ASD platform integration
+  domain: localhost
+  project_root: angular:dev
+  plugins:
+    - supabase
+  hub:
+    iframe_patch: true
+    globalSettings:
+      theme: light
+      widgetStoreUrl: []
+      database: localStorage
+      hideBoardControl: true
+      hideViewControl: false
+      hideServiceControl: false
+      showMenuWidget: false
+      views:
+        showViewOptionsAsButtons: true
+        viewToShow: Studio
+      localStorage:
+        enabled: 'true'
+        loadDashboardFromConfig: 'true'
+    boards:
+      - id: board-supabase
+        name: Development
+        order: 0
+        views:
+          - id: view-app
+            name: App
+            maxInstances: 10
+            widgets:
+              - id: widget-app
+                order: '0'
+                columns: 8
+                rows: 6
+                type: iframe
+                serviceId: angular:dev
+          - id: view-studio
+            name: Studio
+            maxInstances: 10
+          - id: view-terminal
+            name: Terminal
+            maxInstances: 10
+            widgets:
+              - id: widget-ttyd
+                order: '0'
+                columns: 8
+                rows: 6
+                type: iframe
+                serviceId: ttyd
+    serviceTemplates:
+      default:
+        type: iframe
+        maxInstances: 1
+        config:
+          minColumns: 1
+          maxColumns: 8
+          minRows: 1
+          maxRows: 6
+    styling:
+      widget:
+        minColumns: 1
+        maxColumns: 8
+        minRows: 1
+        maxRows: 6
+features:
+  auto_detect_services: false
+  auto_install_binaries: true
+  justfile_integration: false
+  ingress_header: true
+  enable_restricted_ports: false
+  hub_visibility: public
+  auto_install_modules: true
+  auto_start_caddy: true
+  auto_start_ttyd: true
+automation:
+  dev:
+    - name: Bootstrap Supabase
+      run: asd supabase bootstrap
+    - name: Start Caddy
+      run: asd caddy start
+    - name: Wait for Caddy admin API
+      waitFor: http://127.0.0.1:${ASD_CADDY_ADMIN_PORT}/config/
+      timeoutMs: 4000
+    - name: Apply network configuration
+      run: asd net apply --seed --caddy --tunnel
+    - name: Start ttyd
+      command: ASD_NO_PROMPT=1 asd ttyd start
+      background: true
+      skipWhen:
+        port: ${TTYD_PORT}
+    - name: Start dev server
+      command: pnpm dev
+      background: true
+      skipWhen:
+        port: 4200
+    - name: Wait for dev server
+      waitFor: http://127.0.0.1:4200
+      timeoutMs: 30000
+    - name: Display hub URL
+      run: asd hub url
+  start:
+    - name: Bootstrap Supabase
+      run: asd supabase bootstrap
+    - name: Start Caddy
+      run: asd caddy start
+    - name: Wait for Caddy admin API
+      waitFor: http://127.0.0.1:${ASD_CADDY_ADMIN_PORT}/config/
+      timeoutMs: 4000
+    - name: Apply network configuration
+      run: asd net apply --seed --caddy --tunnel
+  stop:
+    - name: Stop Caddy
+      run: asd caddy stop
+    - name: Stop Supabase
+      run: npx supabase stop
+network:
+  caddy:
+    enable: true
+    tls:
+      enabled: true
+      auto: true
+  services:
+    supabase:studio:
+      public: true
+      tunnelPort: 54323
+      subdomain: studio
+      tunnelProtocol: http
+      iframe_patch: true
+    angular:dev:
+      name: ASD Angular
+      dial: 127.0.0.1:4200
+      host: app.localhost
+      publishPreferred: host
+      stripPrefix: false
+      public: true
+      tunnelPort: 4200
+      subdomain: app
+      tunnelProtocol: http
+      iframe_patch: true
+      process:
+        cmd: pnpm dev
+        cwd: .
+      priority: 100
+      description: Angular development server - main frontend
+    ttyd:
+      public: false
+      iframe_patch: true

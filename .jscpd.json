@@ -1,0 +1,18 @@
+{
+  "threshold": 15,
+  "reporters": ["console", "json"],
+  "ignore": [
+    "**/node_modules/**",
+    "**/dist/**",
+    "**/.angular/**",
+    "**/coverage/**",
+    "**/test-results/**",
+    "**/playwright-report/**",
+    "**/*.spec.ts"
+  ],
+  "absolute": true,
+  "gitignore": true,
+  "minLines": 5,
+  "minTokens": 50,
+  "format": ["typescript", "javascript", "css"]
+}
