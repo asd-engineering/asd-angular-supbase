@@ -148,6 +148,33 @@ docker-build:
       -t {{DOCKER_REGISTRY}}/{{DOCKER_IMAGE}}:latest \
       .
 
+# ----------------------------------------
+# DeVinci Cloud IDE
+# ----------------------------------------
+
+# Launch cloud development environment in CI
+devinci:
+    #!/usr/bin/env bash
+    set -e
+    read -p "Username: " USERNAME
+    read -sp "Password: " PASSWORD && echo
+    gh workflow run devinci.yml \
+      -f username="$USERNAME" \
+      -f password="$PASSWORD"
+    echo "Workflow triggered. Run 'just devinci-watch' to track."
+
+# List active DeVinci sessions
+devinci-active:
+    gh run list --workflow=devinci.yml --status=in_progress
+
+# Watch most recent DeVinci run
+devinci-watch:
+    gh run watch $(gh run list --workflow=devinci.yml --limit 1 --json databaseId -q '.[0].databaseId')
+
+# Stop most recent DeVinci session
+devinci-stop:
+    gh run cancel $(gh run list --workflow=devinci.yml --status=in_progress --limit 1 --json databaseId -q '.[0].databaseId')
+
 # Build + push Docker image
 docker-release:
     #!/usr/bin/env bash

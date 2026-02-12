@@ -1,0 +1,36 @@
+name: DeVinci Cloud IDE
+
+on:
+  workflow_dispatch:
+    inputs:
+      username:
+        description: 'Username for ttyd/code-server'
+        required: true
+        type: string
+      password:
+        description: 'Password for ttyd/code-server'
+        required: true
+        type: string
+      asd-version:
+        description: 'ASD CLI version'
+        required: false
+        default: 'latest'
+        type: string
+
+concurrency:
+  group: devinci-${{ github.actor }}
+  cancel-in-progress: false
+
+jobs:
+  devinci:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: asd-engineering/asd-devinci@main
+        with:
+          asd-api-key: ${{ secrets.ASD_API_KEY }}
+          username: ${{ inputs.username }}
+          password: ${{ inputs.password }}
+          asd-version: ${{ inputs.asd-version }}

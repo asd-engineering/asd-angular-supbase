@@ -40,6 +40,16 @@ project:
           - id: view-studio
             name: Studio
             maxInstances: 10
+          - id: view-code
+            name: Code Studio
+            maxInstances: 10
+            widgets:
+              - id: widget-codeserver
+                order: '0'
+                columns: 8
+                rows: 6
+                type: iframe
+                serviceId: codeserver
           - id: view-terminal
             name: Terminal
             maxInstances: 10
@@ -75,6 +85,7 @@ features:
   auto_install_modules: true
   auto_start_caddy: true
   auto_start_ttyd: true
+  auto_start_codeserver: true
 automation:
   dev:
     - name: Bootstrap Supabase
@@ -91,6 +102,11 @@ automation:
       background: true
       skipWhen:
         port: ${TTYD_PORT}
+    - name: Start code-server
+      command: asd code start
+      background: true
+      skipWhen:
+        port: ${CODE_PORT}
     - name: Start dev server
       command: pnpm dev
       background: true
@@ -145,6 +161,9 @@ network:
         cwd: .
       priority: 100
       description: Angular development server - main frontend
+    codeserver:
+      public: false
+      iframe_patch: true
     ttyd:
       public: false
       iframe_patch: true
