@@ -28,9 +28,10 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: asd-engineering/asd-devinci@main
+      - uses: asd-engineering/asd-devinci@v1
         with:
-          asd-api-key: ${{ secrets.ASD_API_KEY }}
+          api-key: ${{ secrets.ASD_API_KEY }}
           username: ${{ inputs.username }}
           password: ${{ inputs.password }}
           asd-version: ${{ inputs.asd-version }}
+          keep-alive: 'true'
