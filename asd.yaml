@@ -138,9 +138,6 @@ tunnels:
 network:
   caddy:
     enable: true
-    basic_auth:
-      enabled: true
-      routes: ['host', 'tunnel']
     tls:
       enabled: true
       auto: true
