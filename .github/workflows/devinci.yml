@@ -1,4 +1,4 @@
-name: DeVinci Cloud IDE
+name: ASD DevInCi
 
 on:
   workflow_dispatch:
