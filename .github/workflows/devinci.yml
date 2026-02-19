@@ -44,7 +44,9 @@ on:
         type: choice
         options:
           - ''
+          - 'User Default'
           - eu-west
+          - us-east
       asd-version:
         description: 'ASD CLI version'
         required: false

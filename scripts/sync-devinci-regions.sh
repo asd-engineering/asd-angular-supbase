@@ -47,6 +47,7 @@ awk -v opts="$OPTS" '
     print "        type: choice"
     print "        options:"
     print "          - \x27\x27"
+    print "          - \x27User Default\x27"
     n = split(opts, lines, "\n")
     for (i = 1; i <= n; i++) print lines[i]
     rd = 1
