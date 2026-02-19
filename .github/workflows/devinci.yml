@@ -11,6 +11,17 @@ on:
         description: 'Password for ttyd/code-server'
         required: true
         type: string
+      region:
+        description: 'Tunnel server region'
+        required: false
+        default: ''
+        type: choice
+        options:
+          - ''
+          - eu-west
+          - eu-central
+          - us-east
+          - us-west
       asd-version:
         description: 'ASD CLI version'
         required: false
@@ -33,4 +44,5 @@ jobs:
           api-key: ${{ secrets.ASD_API_KEY }}
           username: ${{ inputs.username }}
           password: ${{ inputs.password }}
+          region: ${{ inputs.region }}
           asd-version: ${{ inputs.asd-version }}
