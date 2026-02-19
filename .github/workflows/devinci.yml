@@ -15,10 +15,10 @@ on:
       interface:
         description: 'Interface'
         required: false
-        default: 'ttyd'
+        default: 'codeserver'
         type: choice
         options:
-          - ttyd
+          - terminal
           - codeserver
       shell:
         description: 'Shell'
@@ -71,7 +71,7 @@ jobs:
         id: devinci
         with:
           api-key: ${{ secrets.ASD_API_KEY }}
-          interface: ${{ inputs.interface }}
+          interface: ${{ inputs.interface == 'terminal' && 'ttyd' || inputs.interface }}
           shell: ${{ inputs.shell }}
           username: ${{ inputs.username }}
           password: ${{ inputs.password }}
