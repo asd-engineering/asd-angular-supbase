@@ -43,11 +43,11 @@ awk -v opts="$OPTS" '
     print "      region:"
     print "        description: \x27Tunnel server region\x27"
     print "        required: false"
-    print "        default: \x27\x27"
+    print "        default: \x27default\x27"
     print "        type: choice"
     print "        options:"
-    print "          - \x27\x27"
-    print "          - \x27User Default\x27"
+    print "          - default"
+    print "          - User Default"
     n = split(opts, lines, "\n")
     for (i = 1; i <= n; i++) print lines[i]
     rd = 1

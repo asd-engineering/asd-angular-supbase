@@ -40,11 +40,11 @@ on:
       region:
         description: 'Tunnel server region'
         required: false
-        default: ''
+        default: 'default'
         type: choice
         options:
-          - ''
-          - 'User Default'
+          - default
+          - User Default
           - eu-west
           - us-east
       asd-version:
