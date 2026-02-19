@@ -92,29 +92,29 @@ automation:
       run: asd supabase bootstrap
     - name: Start Caddy
       run: asd caddy start
-    - name: Wait for Caddy admin API
-      waitFor: http://127.0.0.1:${ASD_CADDY_ADMIN_PORT}/config/
-      timeoutMs: 4000
+    - httpWaitFor:
+        url: 'http://127.0.0.1:${{ env.ASD_CADDY_ADMIN_PORT }}/config/'
+        expectStatus: 200
     - name: Apply network configuration
       run: asd net apply --seed --caddy --tunnel
     - name: Start ttyd
       command: ASD_NO_PROMPT=1 asd ttyd start
       background: true
       skipWhen:
-        port: ${TTYD_PORT}
+        port: ${{ env.TTYD_PORT }}
     - name: Start code-server
       command: asd code start
       background: true
       skipWhen:
-        port: ${CODE_PORT}
+        port: ${{ env.CODE_PORT }}
     - name: Start dev server
       command: pnpm dev
       background: true
       skipWhen:
         port: 4200
-    - name: Wait for dev server
-      waitFor: http://127.0.0.1:4200
-      timeoutMs: 30000
+    - httpWaitFor:
+        url: 'http://127.0.0.1:4200'
+        expectStatus: 200
     - name: Display hub URL
       run: asd hub url
   start:
@@ -122,9 +122,9 @@ automation:
       run: asd supabase bootstrap
     - name: Start Caddy
       run: asd caddy start
-    - name: Wait for Caddy admin API
-      waitFor: http://127.0.0.1:${ASD_CADDY_ADMIN_PORT}/config/
-      timeoutMs: 4000
+    - httpWaitFor:
+        url: 'http://127.0.0.1:${{ env.ASD_CADDY_ADMIN_PORT }}/config/'
+        expectStatus: 200
     - name: Apply network configuration
       run: asd net apply --seed --caddy --tunnel
   stop:
@@ -132,6 +132,9 @@ automation:
       run: asd caddy stop
     - name: Stop Supabase
       run: npx supabase stop
+tunnels:
+  mode: 'caddy'
+
 network:
   caddy:
     enable: true
