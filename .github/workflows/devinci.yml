@@ -30,11 +30,11 @@ on:
           - zsh
           - powershell
       username:
-        description: 'Username for ttyd/code-server'
+        description: 'Username'
         required: true
         type: string
       password:
-        description: 'Password for ttyd/code-server'
+        description: 'Password'
         required: true
         type: string
       region:
