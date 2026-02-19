@@ -44,7 +44,6 @@ on:
         type: choice
         options:
           - default
-          - User Default
           - eu-west
           - us-east
       asd-version:
