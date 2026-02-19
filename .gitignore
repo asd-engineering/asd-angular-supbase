@@ -49,6 +49,9 @@ __screenshots__/
 .env.local
 .env.*.local
 
+# Local dev files
+/local
+
 # System files
 .DS_Store
 Thumbs.db
