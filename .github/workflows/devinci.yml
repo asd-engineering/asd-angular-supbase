@@ -34,4 +34,3 @@ jobs:
           username: ${{ inputs.username }}
           password: ${{ inputs.password }}
           asd-version: ${{ inputs.asd-version }}
-          keep-alive: 'true'
