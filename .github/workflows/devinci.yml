@@ -61,10 +61,14 @@ jobs:
   devinci:
     runs-on: ${{ inputs.runner }}
     timeout-minutes: 360
+    permissions:
+      contents: read
+      deployments: write
     steps:
       - uses: actions/checkout@v4
 
       - uses: asd-engineering/asd-devinci@v1
+        id: devinci
         with:
           api-key: ${{ secrets.ASD_API_KEY }}
           interface: ${{ inputs.interface }}
