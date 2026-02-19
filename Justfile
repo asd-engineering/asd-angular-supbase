@@ -175,6 +175,10 @@ devinci-watch:
 devinci-stop:
     gh run cancel $(gh run list --workflow=devinci.yml --status=in_progress --limit 1 --json databaseId -q '.[0].databaseId')
 
+# Sync available tunnel regions into devinci workflow
+devinci-sync-regions:
+    ./scripts/sync-devinci-regions.sh
+
 # Build + push Docker image
 docker-release:
     #!/usr/bin/env bash
